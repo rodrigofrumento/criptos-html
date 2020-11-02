@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criptos API</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <h1>Top 5 Criptomoedas!</h1>
+
+    <div id="coins"></div>
+
+
+    <script type="text/javascript">
+        //API
+        var apikey = {
+            key: 'API KEY HERE'
+        }
+        //Req API
+        fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY=' + apikey.key)
+            .then((response) => {
+                if(!response.ok) throw new Error('Erro, status' + response.status)
+                return response.json()
+            })
+        .then((api) => {
+            var text = ""
+            //GET top50 coins
+            for(let i = 0; i < 5; i++)
+            {
+                //SHOW infos
+                text = text + `
+                <div class="media">
+                    <img src="https://via.placeholder.com/300x300.png?text=${api.data[i].name}" class="align-self-center mr-3" alt="coin" width="100" height="60">
+                    <div class="media-body">
+                        <h5 class="mt-2">${api.data[i].name}</h5>
+                        <p>${api.data[i].symbol}</p>
+                    </div>
+                </div>
+            `
+            document.getElementById("coins").innerHTML = text
+            }
+        })
+        .catch((error) => {
+            console.error(error.message)
+        })
+    </script>
+</body>
+</html>
